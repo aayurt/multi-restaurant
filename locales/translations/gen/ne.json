@@ -1,0 +1,18 @@
+{
+  "login": {
+    "welcome_to": "{newworld} मा स्वागत छ",
+    "sign_in": "साइन इन गर्नुहोस्",
+    "sign_in_here": "यहाँ साइन इन गर्नुहोस्",
+    "sign_up_now": "अहिले साइन अप गर्नुहोस्",
+    "subtitle": "बिजागी समुदाय",
+    "title": "मा स्वागत छ"
+  },
+  "login_sign_in": "साइन इन गर्नुहोस् huss1",
+  "login_sign_in_here": "यहाँ साइन इन गर्नुहोस्",
+  "login_sign_up_now": "अहिले साइन अप गर्नुहोस्",
+  "login_subtitle": "बिजागी समुदाय",
+  "login_title": "मा स्वागत छ",
+  "login_welcome_to": "{newworld} मा स्वागत छ",
+  "register_have_bizagi_account": "के तपाईसँग बिजागी खाता छ?",
+  "register_terms_use_required": "कृपया नियम र सर्तहरू चयन गर्नुहोस्"
+}

@@ -1,21 +1,22 @@
+import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { searchFields } from '@/search/fieldOverrides'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
-import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
-import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
-import { searchFields } from '@/search/fieldOverrides'
-import { beforeSyncWithSearch } from '@/search/beforeSync'
+import { Plugin } from 'payload'
 
+import { isAdmin } from '@/access/admin'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | Afno News` : 'Afno News'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -45,6 +46,11 @@ export const plugins: Plugin[] = [
       hooks: {
         afterChange: [revalidateRedirects],
       },
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
+      },
     },
   }),
   nestedDocsPlugin({
@@ -60,6 +66,11 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
+      },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -80,6 +91,13 @@ export const plugins: Plugin[] = [
         })
       },
     },
+    formSubmissionOverrides: {
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
+      },
+    },
   }),
   searchPlugin({
     collections: ['posts'],
@@ -87,6 +105,11 @@ export const plugins: Plugin[] = [
     searchOverrides: {
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
+      },
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+        delete: isAdmin,
       },
     },
   }),
