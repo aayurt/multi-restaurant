@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           source: '.next/standalone/**,.next/static/**,public/**'
-          target: '/var/www/your-app'
+          target: '/var/www/vhosts/ratosuryaonline.com/httpdocs'
 
       - name: Restart server
         uses: appleboy/ssh-action@v1.0.0
@@ -44,5 +44,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            cd /var/www/your-app
+            cd /var/www/vhosts/ratosuryaonline.com/httpdocs
             pnpm install --prod
