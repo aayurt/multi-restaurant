@@ -23,11 +23,11 @@ jobs:
 
       - name: Build Next.js (standalone)
         env:
-          DATABASE_URI: ${{ vars.DATABASE_URI }}
-          PAYLOAD_SECRET: ${{ vars.PAYLOAD_SECRET }}
-          NEXT_PUBLIC_SERVER_URL: ${{ vars.NEXT_PUBLIC_SERVER_URL }}
-          CRON_SECRET: ${{ vars.CRON_SECRET }}
-          PREVIEW_SECRET: ${{ vars.PREVIEW_SECRET }}
+          DATABASE_URI: postgresql://postgres.zudswtpudtzzehieogcw:Nepal%40123@aws-0-eu-west-2.pooler.supabase.com:6543/postgres
+          PAYLOAD_SECRET: 4ca13d993b1e2d789734dada
+          NEXT_PUBLIC_SERVER_URL: https://ratosuryaonline.com
+          CRON_SECRET: YOUR_CRON_SECRET_HERE
+          PREVIEW_SECRET: YOUR_SECRET_HERE
         run: pnpm build
 
       - name: Copy standalone to server
