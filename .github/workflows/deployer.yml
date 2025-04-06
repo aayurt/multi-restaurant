@@ -10,6 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Echo secrets
+        run: |
+          echo "Server Host: ${{ secrets.SERVER_HOST }}"
+          echo "Server User: ${{ secrets.SERVER_USER }}"
+          echo "Deploy Key: ${{ secrets.DEPLOY_KEY }}"
+          echo "SSH Passphrase: ${{ secrets.SSH_PASSPHRASE }}"
+
       - name: Copy standalone to server
         uses: appleboy/ssh-action@master
         with:
