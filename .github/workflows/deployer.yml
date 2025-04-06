@@ -22,6 +22,12 @@ jobs:
         run: pnpm install
 
       - name: Build Next.js (standalone)
+        env:
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+          NEXT_PUBLIC_SERVER_URL: ${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PREVIEW_SECRET: ${{ secrets.PREVIEW_SECRET }}
         run: pnpm build
 
       - name: Copy standalone to server
