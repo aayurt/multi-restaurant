@@ -9,7 +9,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: prod-payload
+      env_var: prod-payload
 
     steps:
       - name: Checkout code
