@@ -55,7 +55,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: '.next/standalone/**,.next/static/**,public/**'
+          source: '.next/standalone/'
           target: '/var/www/vhosts/ratosuryaonline.com/httpdocs'
 
       - name: Install dependencies on server
