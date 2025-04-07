@@ -37,7 +37,7 @@ jobs:
           CRON_SECRET: YOUR_CRON_SECRET_HERE
           PREVIEW_SECRET: YOUR_SECRET_HERE
         run: pnpm build
-      - run: cd .next/standalone && pnpm install --prod
+      - run: cd .next/standalone && pnpm install
       - run: cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
 
       - name: Check if standalone directory exists
