@@ -7,9 +7,17 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js v23.10.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '23.10.0'
+
       - name: Copy standalone to server
         uses: appleboy/ssh-action@master
         with:
@@ -19,9 +27,6 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             echo "Copying standalone to server..."
-
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       - name: Set up Node | pnpm
         uses: pnpm/action-setup@v4
