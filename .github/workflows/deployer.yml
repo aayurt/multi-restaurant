@@ -34,17 +34,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Next.js (standalone) and move files
-        env:
-          DATABASE_URI: postgresql://postgres.zudswtpudtzzehieogcw:Nepal%40123@aws-0-eu-west-2.pooler.supabase.com:6543/postgres
-          PAYLOAD_SECRET: 4ca13d993b1e2d789734dada
-          NEXT_PUBLIC_SERVER_URL: https://ratosuryaonline.com
-          CRON_SECRET: YOUR_CRON_SECRET_HERE
-          PREVIEW_SECRET: YOUR_SECRET_HERE
-        run: pnpm build
-      - run: cd .next/standalone && rm -rf node_modules && pnpm install
-      - run: cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
-
       - name: Check if standalone directory exists
         run: |
           ls -al .next || echo "Directory not found!"
@@ -68,12 +57,18 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          strip_components: 2
-          source: '.next/standalone'
+          # strip_components: 2
+          source: '/'
           target: '/var/www/vhosts/ratosuryaonline.com/httpdocs'
 
       - name: Install dependencies on server
         uses: appleboy/ssh-action@master
+        env:
+          DATABASE_URI: postgresql://postgres.zudswtpudtzzehieogcw:Nepal%40123@aws-0-eu-west-2.pooler.supabase.com:6543/postgres
+          PAYLOAD_SECRET: 4ca13d993b1e2d789734dada
+          NEXT_PUBLIC_SERVER_URL: https://ratosuryaonline.com
+          CRON_SECRET: YOUR_CRON_SECRET_HERE
+          PREVIEW_SECRET: YOUR_SECRET_HERE
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
@@ -82,3 +77,5 @@ jobs:
           script: |
             cd /var/www/vhosts/ratosuryaonline.com/httpdocs
             pnpm install
+            pnpm build
+            cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
