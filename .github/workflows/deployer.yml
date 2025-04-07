@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Next.js (standalone)
+      - name: Build Next.js (standalone) and move files
         env:
           DATABASE_URI: postgresql://postgres.zudswtpudtzzehieogcw:Nepal%40123@aws-0-eu-west-2.pooler.supabase.com:6543/postgres
           PAYLOAD_SECRET: 4ca13d993b1e2d789734dada
@@ -37,6 +37,7 @@ jobs:
           CRON_SECRET: YOUR_CRON_SECRET_HERE
           PREVIEW_SECRET: YOUR_SECRET_HERE
         run: pnpm build
+      - run: cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
 
       - name: Check if standalone directory exists
         run: |
@@ -61,7 +62,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           strip_components: 2
-          source: '.next/standalone,.next/static,public'
+          source: '.next/standalone'
           target: '/var/www/vhosts/ratosuryaonline.com/httpdocs'
 
       - name: Install dependencies on server
