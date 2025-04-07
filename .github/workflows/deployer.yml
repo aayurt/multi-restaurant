@@ -38,6 +38,11 @@ jobs:
           PREVIEW_SECRET: YOUR_SECRET_HERE
         run: pnpm build
 
+      - name: Check if standalone directory exists
+        run: |
+          ls -al .next || echo "Directory not found!"
+          ls -al .next/standalone || echo "Directory not found!"
+
       - name: Clean server
         uses: appleboy/ssh-action@master
         with:
