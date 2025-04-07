@@ -53,6 +53,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             rm -rf /var/www/vhosts/ratosuryaonline.com/httpdocs/*
+            rm -rf /var/www/vhosts/ratosuryaonline.com/httpdocs/.next
 
       - name: Copy standalone to server
         uses: appleboy/scp-action@master
@@ -73,5 +74,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /var/www/vhosts/ratosuryaonline.com/httpdocs/.next
+            cd /var/www/vhosts/ratosuryaonline.com/httpdocs
             pnpm install
