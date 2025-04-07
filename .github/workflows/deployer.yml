@@ -41,8 +41,8 @@ jobs:
           NEXT_PUBLIC_SERVER_URL: https://ratosuryaonline.com
           CRON_SECRET: YOUR_CRON_SECRET_HERE
           PREVIEW_SECRET: YOUR_SECRET_HERE
-        run: pnpm build --prefix /var/www/vhosts/ratosuryaonline.com/httpdocs
-      - run: cd .next/standalone && rm -rf node_modules && pnpm install
+        run: pnpm build /var/www/vhosts/ratosuryaonline.com/httpdocs
+      - run: cd /var/www/vhosts/ratosuryaonline.com/httpdocs/.next/standalone && rm -rf node_modules && pnpm install
       - run: cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
 
       - name: Check if standalone directory exists
