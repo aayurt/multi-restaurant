@@ -72,5 +72,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /var/www/vhosts/ratosuryaonline.com/httpdocs/.n
+            cd /var/www/vhosts/ratosuryaonline.com/httpdocs/.next
             pnpm install
