@@ -22,7 +22,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
-  output: 'standalone',
 }
 
 export default withPayload(nextConfig)
