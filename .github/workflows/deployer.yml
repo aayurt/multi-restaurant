@@ -1,75 +1,16 @@
-name: Build and Deploy Standalone
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main # or your main branch
+      - main
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-24.04
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js v23.10.0
-        uses: actions/setup-node@v3
-        with:
-          node-version: '23.10.0'
-
-      - name: Copy standalone to server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            echo "Copying standalone to server..."
-
-      - name: Set up Node | pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build Next.js (standalone) and move files
-        env:
-          DATABASE_URI: postgresql://postgres.zudswtpudtzzehieogcw:Nepal%40123@aws-0-eu-west-2.pooler.supabase.com:6543/postgres
-          PAYLOAD_SECRET: 4ca13d993b1e2d789734dada
-          NEXT_PUBLIC_SERVER_URL: https://ratosuryaonline.com
-          CRON_SECRET: YOUR_CRON_SECRET_HERE
-          PREVIEW_SECRET: YOUR_SECRET_HERE
-        run: pnpm build
-
-      - name: Check if standalone directory exists
-        run: |
-          ls -al .next || echo "Directory not found!"
-          ls -al .next/standalone || echo "Directory not found!"
-
-      - name: Clean server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            rm -rf /var/www/vhosts/ratosuryaonline.com/httpdocs/*
-            rm -rf /var/www/vhosts/ratosuryaonline.com/httpdocs/.next
-
-      - name: Copy standalone to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: './'
-          target: '/var/www/vhosts/ratosuryaonline.com/httpdocs'
-
-      - name: Install dependencies on server
+      - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -78,6 +19,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd /var/www/vhosts/ratosuryaonline.com/httpdocs
+            git pull origin main
             pnpm install
             pnpm build
-            cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
+            pm2 restart 0
