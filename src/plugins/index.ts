@@ -131,6 +131,9 @@ export const plugins: Plugin[] = [
       'form-submissions': {},
       'menu-items': {},
       redirects: {},
+      promotions: {},
+      reviews: {},
+      'opening-hours': {},
     },
     tenantField: {
       access: {

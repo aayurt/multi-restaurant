@@ -5,9 +5,12 @@ export const post2: (args: PostArgs) => RequiredDataFromCollectionSlug<'posts'> 
   heroImage,
   blockImage,
   author,
+  tenant,
 }) => {
   return {
     slug: 'global-gaze',
+    tenant: tenant,
+
     _status: 'published',
     authors: [author],
     content: {

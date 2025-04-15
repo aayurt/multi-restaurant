@@ -13,6 +13,7 @@ export const Tenants: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    group: 'Tenants',
   },
   fields: [
     {

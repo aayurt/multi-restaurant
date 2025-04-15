@@ -20,6 +20,9 @@ import { Tenants } from './collections/Tenants'
 import { Menu } from './collections/Menu'
 import { FoodCategory } from './collections/FoodCategory'
 import { MenuItem } from './collections/MenuItem'
+import { Promotions } from './collections/Promotions'
+import { Reviews } from './collections/Reviews'
+import { OpeningHours } from './collections/OpeningHours'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -68,7 +71,20 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Tenants, Menu, FoodCategory, MenuItem],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Tenants,
+    Menu,
+    FoodCategory,
+    MenuItem,
+    Promotions,
+    Reviews,
+    OpeningHours,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

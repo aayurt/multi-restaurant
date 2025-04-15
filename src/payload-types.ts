@@ -76,6 +76,9 @@ export interface Config {
     menu: Menu;
     'food-categories': FoodCategory;
     'menu-items': MenuItem;
+    promotions: Promotion;
+    reviews: Review;
+    'opening-hours': OpeningHour;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,6 +99,9 @@ export interface Config {
     menu: MenuSelect<false> | MenuSelect<true>;
     'food-categories': FoodCategoriesSelect<false> | FoodCategoriesSelect<true>;
     'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
+    promotions: PromotionsSelect<false> | PromotionsSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'opening-hours': OpeningHoursSelect<false> | OpeningHoursSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -853,6 +859,69 @@ export interface MenuItem {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions".
+ */
+export interface Promotion {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  title: string;
+  description?: string | null;
+  discountType: 'percentage' | 'fixed';
+  /**
+   * For percentage, enter a value between 0 and 100. For fixed amount, enter the discount amount.
+   */
+  value: number;
+  startDate: string;
+  endDate: string;
+  /**
+   * Optional: Select a specific menu item for this promotion. If none selected, the promotion applies globally.
+   */
+  menuItem?: (number | null) | MenuItem;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  /**
+   * Rating from 1 to 5 stars
+   */
+  rating: number;
+  comment: string;
+  image?: (number | null) | Media;
+  user: number | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opening-hours".
+ */
+export interface OpeningHour {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  dayOfWeek: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+  /**
+   * Select opening time
+   */
+  openTime: string;
+  /**
+   * Select closing time
+   */
+  closeTime: string;
+  /**
+   * Check this box to mark this day as temporarily closed
+   */
+  isClosed: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1060,6 +1129,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'menu-items';
         value: number | MenuItem;
+      } | null)
+    | ({
+        relationTo: 'promotions';
+        value: number | Promotion;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'opening-hours';
+        value: number | OpeningHour;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1499,6 +1580,48 @@ export interface MenuItemsSelect<T extends boolean = true> {
   image?: T;
   foodCategory?: T;
   tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "promotions_select".
+ */
+export interface PromotionsSelect<T extends boolean = true> {
+  tenant?: T;
+  title?: T;
+  description?: T;
+  discountType?: T;
+  value?: T;
+  startDate?: T;
+  endDate?: T;
+  menuItem?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  tenant?: T;
+  rating?: T;
+  comment?: T;
+  image?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "opening-hours_select".
+ */
+export interface OpeningHoursSelect<T extends boolean = true> {
+  tenant?: T;
+  dayOfWeek?: T;
+  openTime?: T;
+  closeTime?: T;
+  isClosed?: T;
   updatedAt?: T;
   createdAt?: T;
 }

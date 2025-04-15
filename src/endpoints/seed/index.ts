@@ -9,6 +9,7 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { tenantsSeedData } from './restaurant/tenants'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -18,6 +19,8 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'menu',
+  'tenants',
 ]
 const globals: GlobalSlug[] = ['header', 'footer']
 
@@ -96,7 +99,12 @@ export const seed = async ({
   ])
 
   const [
+    chillimTenant,
+    momoTenant,
+    superAuthor,
     demoAuthor,
+    demo2Author,
+
     image1Doc,
     image2Doc,
     image3Doc,
@@ -105,6 +113,23 @@ export const seed = async ({
     newsCategory,
     financeCategory,
   ] = await Promise.all([
+    payload.create({
+      collection: 'tenants',
+      data: tenantsSeedData[0],
+    }),
+    payload.create({
+      collection: 'tenants',
+      data: tenantsSeedData[1],
+    }),
+    payload.create({
+      collection: 'users',
+      data: {
+        name: 'Admin',
+        email: 'superman@gmail.com',
+        password: 'Testing123!',
+        role: 'super-admin',
+      },
+    }),
     payload.create({
       collection: 'users',
       data: {
@@ -117,21 +142,14 @@ export const seed = async ({
     payload.create({
       collection: 'users',
       data: {
-        name: 'Admin',
-        email: 'aayurts+user@gmail.com',
-        password: 'Testing123!',
-        role: 'user',
-      },
-    }),
-    payload.create({
-      collection: 'users',
-      data: {
         name: 'Demo Author',
         email: 'aayurtshrestha@example.com',
         password: 'Testing123!',
         role: 'user',
       },
     }),
+
+    // Media
     payload.create({
       collection: 'media',
       data: image1,
@@ -152,15 +170,22 @@ export const seed = async ({
       data: imageHero1,
       file: hero1Buffer,
     }),
+    payload.create({
+      collection: 'media',
+      data: imageHero1,
+      file: hero1Buffer,
+    }),
+
+    // Categories
 
     payload.create({
       collection: 'categories',
       data: {
-        title: 'Technology',
+        title: 'Italian',
         breadcrumbs: [
           {
-            label: 'Technology',
-            url: '/technology',
+            label: 'Italian',
+            url: '/italian',
           },
         ],
       },
@@ -169,11 +194,11 @@ export const seed = async ({
     payload.create({
       collection: 'categories',
       data: {
-        title: 'News',
+        title: 'Chinese',
         breadcrumbs: [
           {
-            label: 'News',
-            url: '/news',
+            label: 'Chinese',
+            url: '/chinese',
           },
         ],
       },
@@ -182,11 +207,11 @@ export const seed = async ({
     payload.create({
       collection: 'categories',
       data: {
-        title: 'Finance',
+        title: 'Japanese',
         breadcrumbs: [
           {
-            label: 'Finance',
-            url: '/finance',
+            label: 'Japanese',
+            url: '/japanese',
           },
         ],
       },
@@ -194,24 +219,11 @@ export const seed = async ({
     payload.create({
       collection: 'categories',
       data: {
-        title: 'Design',
+        title: 'Mexican',
         breadcrumbs: [
           {
-            label: 'Design',
-            url: '/design',
-          },
-        ],
-      },
-    }),
-
-    payload.create({
-      collection: 'categories',
-      data: {
-        title: 'Software',
-        breadcrumbs: [
-          {
-            label: 'Software',
-            url: '/software',
+            label: 'Mexican',
+            url: '/mexican',
           },
         ],
       },
@@ -220,11 +232,24 @@ export const seed = async ({
     payload.create({
       collection: 'categories',
       data: {
-        title: 'Engineering',
+        title: 'Indian',
         breadcrumbs: [
           {
-            label: 'Engineering',
-            url: '/engineering',
+            label: 'Indian',
+            url: '/indian',
+          },
+        ],
+      },
+    }),
+
+    payload.create({
+      collection: 'categories',
+      data: {
+        title: 'Thai',
+        breadcrumbs: [
+          {
+            label: 'Thai',
+            url: '/thai',
           },
         ],
       },
@@ -248,56 +273,22 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding posts...`)
 
-  // Do not create posts with `Promise.all` because we want the posts to be created in order
-  // This way we can sort them by `createdAt` or `publishedAt` and they will be in the expected order
-  const post1Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post1({ heroImage: image1Doc, blockImage: image2Doc, author: demoAuthor }),
-  })
+  // Create menus for each tenant
+  // await Promise.all(
+  //   menuSeedData.map((menu) => {
+  //     return payload.create({
+  //       collection: 'menu',
+  //       data: menu,
+  //     })
+  //   }),
+  // )
 
-  const post2Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post2({ heroImage: image2Doc, blockImage: image3Doc, author: demoAuthor }),
-  })
-
-  const post3Doc = await payload.create({
-    collection: 'posts',
-    depth: 0,
-    context: {
-      disableRevalidate: true,
-    },
-    data: post3({ heroImage: image3Doc, blockImage: image1Doc, author: demoAuthor }),
-  })
-
-  // update each post with related posts
-  await payload.update({
-    id: post1Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post2Doc.id, post3Doc.id],
-    },
-  })
-  await payload.update({
-    id: post2Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post3Doc.id],
-    },
-  })
-  await payload.update({
-    id: post3Doc.id,
-    collection: 'posts',
-    data: {
-      relatedPosts: [post1Doc.id, post2Doc.id],
-    },
+  const { post1Doc, post2Doc, post3Doc } = await createAndLinkPosts(payload, {
+    image1Doc,
+    image2Doc,
+    image3Doc,
+    demoAuthor,
+    tenant: chillimTenant,
   })
 
   payload.logger.info(`— Seeding contact form...`)
@@ -409,4 +400,79 @@ async function fetchFileByURL(url: string): Promise<File> {
     mimetype: `image/${url.split('.').pop()}`,
     size: data.byteLength,
   }
+}
+async function createAndLinkPosts(
+  payload: Payload,
+  { image1Doc, image2Doc, image3Doc, demoAuthor, tenant },
+) {
+  // Do not create posts with `Promise.all` because we want the posts to be created in order
+  // This way we can sort them by `createdAt` or `publishedAt` and they will be in the expected order
+  const post1Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post1({
+      heroImage: image1Doc,
+      blockImage: image2Doc,
+      author: demoAuthor,
+      tenant: tenant,
+    }),
+  })
+
+  const post2Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post2({
+      heroImage: image2Doc,
+      blockImage: image3Doc,
+      author: demoAuthor,
+      tenant: tenant,
+    }),
+  })
+
+  const post3Doc = await payload.create({
+    collection: 'posts',
+    depth: 0,
+    context: {
+      disableRevalidate: true,
+    },
+    data: post3({
+      heroImage: image3Doc,
+      blockImage: image1Doc,
+      author: demoAuthor,
+      tenant: tenant,
+    }),
+  })
+
+  // update each post with related posts
+  await Promise.all([
+    payload.update({
+      id: post1Doc.id,
+      collection: 'posts',
+      data: {
+        relatedPosts: [post2Doc.id, post3Doc.id],
+      },
+    }),
+    payload.update({
+      id: post2Doc.id,
+      collection: 'posts',
+      data: {
+        relatedPosts: [post1Doc.id, post3Doc.id],
+      },
+    }),
+    payload.update({
+      id: post3Doc.id,
+      collection: 'posts',
+      data: {
+        relatedPosts: [post1Doc.id, post2Doc.id],
+      },
+    }),
+  ])
+
+  return { post1Doc, post2Doc, post3Doc }
 }
