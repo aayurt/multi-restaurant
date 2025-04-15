@@ -126,7 +126,11 @@ export const plugins: Plugin[] = [
       users: {},
       media: {},
       forms: {},
+      menu: {},
+      'food-categories': {},
       'form-submissions': {},
+      'menu-items': {},
+      redirects: {},
     },
     tenantField: {
       access: {

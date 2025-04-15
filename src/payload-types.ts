@@ -73,6 +73,9 @@ export interface Config {
     categories: Category;
     users: User;
     tenants: Tenant;
+    menu: Menu;
+    'food-categories': FoodCategory;
+    'menu-items': MenuItem;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -90,6 +93,9 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     tenants: TenantsSelect<false> | TenantsSelect<true>;
+    menu: MenuSelect<false> | MenuSelect<true>;
+    'food-categories': FoodCategoriesSelect<false> | FoodCategoriesSelect<true>;
+    'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -246,6 +252,19 @@ export interface Tenant {
    * Used for domain-based tenant handling
    */
   domain?: string | null;
+  /**
+   * Restaurant location coordinates
+   */
+  location?: {
+    /**
+     * Latitude coordinate of the restaurant location
+     */
+    latitude?: number | null;
+    /**
+     * Longitude coordinate of the restaurant location
+     */
+    longitude?: number | null;
+  };
   /**
    * Used for url paths, example: /tenant-slug/page-slug
    */
@@ -791,10 +810,54 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu".
+ */
+export interface Menu {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "food-categories".
+ */
+export interface FoodCategory {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  menu: number | Menu;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items".
+ */
+export interface MenuItem {
+  id: number;
+  tenant?: (number | null) | Tenant;
+  name: string;
+  description?: string | null;
+  /**
+   * Price in your local currency
+   */
+  price: number;
+  image: number | Media;
+  foodCategory: number | FoodCategory;
+  tags?: ('vegan' | 'vegetarian' | 'spicy' | 'gluten-free' | 'dairy-free' | 'nuts')[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
   id: number;
+  tenant?: (number | null) | Tenant;
   /**
    * You will need to rebuild the website when changing this field.
    */
@@ -985,6 +1048,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tenants';
         value: number | Tenant;
+      } | null)
+    | ({
+        relationTo: 'menu';
+        value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'food-categories';
+        value: number | FoodCategory;
+      } | null)
+    | ({
+        relationTo: 'menu-items';
+        value: number | MenuItem;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1379,8 +1454,51 @@ export interface TenantsSelect<T extends boolean = true> {
         linkedin?: T;
       };
   domain?: T;
+  location?:
+    | T
+    | {
+        latitude?: T;
+        longitude?: T;
+      };
   slug?: T;
   allowPublicRead?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu_select".
+ */
+export interface MenuSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "food-categories_select".
+ */
+export interface FoodCategoriesSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  menu?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items_select".
+ */
+export interface MenuItemsSelect<T extends boolean = true> {
+  tenant?: T;
+  name?: T;
+  description?: T;
+  price?: T;
+  image?: T;
+  foodCategory?: T;
+  tags?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1389,6 +1507,7 @@ export interface TenantsSelect<T extends boolean = true> {
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
+  tenant?: T;
   from?: T;
   to?:
     | T

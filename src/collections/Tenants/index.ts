@@ -107,10 +107,38 @@ export const Tenants: CollectionConfig = {
       },
     },
     {
+      name: 'location',
+      type: 'group',
+      fields: [
+        {
+          name: 'latitude',
+          type: 'number',
+          required: false,
+          admin: {
+            description: 'Latitude coordinate of the restaurant location',
+            step: 0.000001,
+          },
+        },
+        {
+          name: 'longitude',
+          type: 'number',
+          required: false,
+          admin: {
+            description: 'Longitude coordinate of the restaurant location',
+            step: 0.000001,
+          },
+        },
+      ],
+      admin: {
+        description: 'Restaurant location coordinates',
+      },
+    },
+    {
       name: 'slug',
       type: 'text',
       admin: {
         description: 'Used for url paths, example: /tenant-slug/page-slug',
+        position: 'sidebar',
       },
       index: true,
       required: true,

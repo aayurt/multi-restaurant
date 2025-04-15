@@ -17,6 +17,9 @@ import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
 import { Tenants } from './collections/Tenants'
+import { Menu } from './collections/Menu'
+import { FoodCategory } from './collections/FoodCategory'
+import { MenuItem } from './collections/MenuItem'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -65,7 +68,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, Tenants],
+  collections: [Pages, Posts, Media, Categories, Users, Tenants, Menu, FoodCategory, MenuItem],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
