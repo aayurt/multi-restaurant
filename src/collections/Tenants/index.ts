@@ -21,6 +21,85 @@ export const Tenants: CollectionConfig = {
       required: true,
     },
     {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      // required: true,
+    },
+    {
+      name: 'coverImage',
+      type: 'upload',
+      relationTo: 'media',
+      // required: true,
+    },
+    {
+      name: 'description',
+      type: 'text',
+      // required: true,
+    },
+    {
+      name: 'contactInfo',
+      type: 'group',
+      fields: [
+        {
+          name: 'phone',
+          type: 'text',
+          // required: true,
+        },
+        {
+          name: 'email',
+          type: 'email',
+          // required: true,
+        },
+      ],
+    },
+    {
+      name: 'socialMedia',
+      type: 'group',
+      fields: [
+        {
+          name: 'facebook',
+          type: 'text',
+          admin: {
+            description: 'Facebook profile URL',
+          },
+        },
+        {
+          name: 'instagram',
+          type: 'text',
+          admin: {
+            description: 'Instagram profile URL',
+          },
+        },
+        {
+          name: 'twitter',
+          type: 'text',
+          admin: {
+            description: 'Twitter profile URL',
+          },
+        },
+        {
+          name: 'linkedin',
+          type: 'text',
+          admin: {
+            description: 'LinkedIn profile URL',
+          },
+        },
+      ],
+    },
+    // {
+    //   name: 'locationId',
+    //   type: 'relationship',
+    //   relationTo: 'locations',
+    //   required: true,
+    // },
+    // {
+    //   name: 'openingHoursId',
+    //   type: 'relationship',
+    //   relationTo: 'opening-hours',
+    //   required: true,
+    // },
+    {
       name: 'domain',
       type: 'text',
       admin: {

@@ -24,6 +24,10 @@ const nextConfig = {
         }
       }),
       {
+        hostname: `chowmien.localhost`,
+        protocol: 'http',
+      },
+      {
         hostname: `chilim.localhost`,
         protocol: 'http',
       },
