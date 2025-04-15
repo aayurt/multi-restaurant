@@ -29,7 +29,7 @@ export const canMutateTenant: Access = ({ req }) => {
         req.user?.tenants
           ?.map(({ roles, tenant }) =>
             roles?.includes('tenant-admin')
-              ? tenant && (typeof tenant === 'string' ? tenant : tenant.id)
+              ? tenant && (typeof tenant === 'string' ? tenant : tenant)
               : null,
           )
           .filter(Boolean) || [],

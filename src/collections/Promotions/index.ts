@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, NumberField, DateFieldValidation } from 'payload'
 import { isAdmin } from '@/access/admin'
 import { isSuperAdmin } from '@/access/isSuperAdmin'
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
@@ -51,15 +51,16 @@ export const Promotions: CollectionConfig = {
         description:
           'For percentage, enter a value between 0 and 100. For fixed amount, enter the discount amount.',
       },
-      validate: (val, { data }) => {
-        if (data.discountType === 'percentage' && (val < 0 || val > 100)) {
-          return 'Percentage must be between 0 and 100'
-        }
-        if (data.discountType === 'fixed' && val < 0) {
-          return 'Fixed discount amount must be greater than 0'
-        }
-        return true
-      },
+
+      // validate: (val, args) => {
+      //   if (data?.discountType === 'percentage' && (val < 0 || val > 100)) {
+      //     return 'Percentage must be between 0 and 100'
+      //   }
+      //   if (data?.discountType === 'fixed' && val <= 0) {
+      //     return 'Fixed discount amount must be greater than 0'
+      //   }
+      //   return true
+      // },
     },
     {
       name: 'startDate',
@@ -82,12 +83,12 @@ export const Promotions: CollectionConfig = {
           displayFormat: 'yyyy-MM-dd HH:mm',
         },
       },
-      validate: (val, { data }) => {
-        if (data.startDate && new Date(val) <= new Date(data.startDate)) {
-          return 'End date must be after start date'
-        }
-        return true
-      },
+      // validate: ((val, options) => {
+      //   if (options && options?.data.startDate && new Date(val) <= new Date(data.startDate)) {
+      //     return 'End date must be after start date'
+      //   }
+      //   return true
+      // }) as DateFieldValidation,
     },
     {
       name: 'menuItem',

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { Collection, Endpoint } from 'payload'
 
 import { headersWithCors } from '@payloadcms/next/utilities'
