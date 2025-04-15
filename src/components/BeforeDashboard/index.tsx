@@ -1,16 +1,19 @@
+'use client'
 import { Banner } from '@payloadcms/ui/elements/Banner'
 import React from 'react'
 
 import { SeedButton } from './SeedButton'
 import './index.scss'
+import { useTenantSelection } from '@payloadcms/plugin-multi-tenant/client'
 
 const baseClass = 'before-dashboard'
 
 const BeforeDashboard: React.FC = () => {
+  const tenant = useTenantSelection()
   return (
     <div className={baseClass}>
       <Banner className={`${baseClass}__banner`} type="success">
-        <h4>Welcome to your dashboard!</h4>
+        <h4>Welcome to your {tenant.selectedTenantID} dashboard!</h4>
       </Banner>
       {/* Here&apos;s what to do next:
       <ul className={`${baseClass}__instructions`}>

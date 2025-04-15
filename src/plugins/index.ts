@@ -12,11 +12,14 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { Plugin } from 'payload'
 
 import { isAdmin } from '@/access/admin'
-import { Page, Post } from '@/payload-types'
+import { Config, Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { multiTenantPlugin } from '@payloadcms/plugin-multi-tenant'
+import { isSuperAdmin } from '@/access/isSuperAdmin'
+import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Rato Surya Online` : 'Rato Surya Online'
+  return doc?.title ? `${doc.title} | ${doc.tenant}` : 'Rato Surya Online'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -72,23 +75,25 @@ export const plugins: Plugin[] = [
         delete: isAdmin,
       },
       fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
-                },
-              }),
+        return [
+          ...defaultFields.map((field) => {
+            if ('name' in field && field.name === 'confirmationMessage') {
+              return {
+                ...field,
+                editor: lexicalEditor({
+                  features: ({ rootFeatures }) => {
+                    return [
+                      ...rootFeatures,
+                      FixedToolbarFeature(),
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    ]
+                  },
+                }),
+              }
             }
-          }
-          return field
-        })
+            return field
+          }),
+        ]
       },
     },
     formSubmissionOverrides: {
@@ -114,4 +119,29 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
+  multiTenantPlugin<Config>({
+    collections: {
+      pages: {},
+      posts: {},
+      users: {},
+      media: {},
+      forms: {},
+      'form-submissions': {},
+    },
+    tenantField: {
+      access: {
+        read: () => true,
+        update: ({ req }) => {
+          if (isSuperAdmin(req.user)) {
+            return true
+          }
+          return getUserTenantIDs(req.user).length > 0
+        },
+      },
+    },
+    tenantsArrayField: {
+      includeDefaultField: false,
+    },
+    userHasAccessToAllTenants: (user) => isSuperAdmin(user),
+  }),
 ]

@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
-import { draftMode } from 'next/headers'
+import { draftMode, headers } from 'next/headers'
 import React, { cache } from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
@@ -50,9 +50,14 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   let page: RequiredDataFromCollectionSlug<'pages'> | null
 
+  const host = (await headers()).get('host') || ''
+  const domain = host.split('.')[0]
+
   page = await queryPageBySlug({
     slug,
+    domain,
   })
+  console.log('page', page)
 
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
@@ -70,9 +75,7 @@ export default async function Page({ params: paramsPromise }: Args) {
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
-
       {draft && <LivePreviewListener />}
-
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
@@ -81,30 +84,57 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
+  const host = (await headers()).get('host') || ''
+  const domain = host.split('.')[0]
   const page = await queryPageBySlug({
     slug,
+    domain,
   })
 
   return generateMeta({ doc: page })
 }
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
+const queryPageBySlug = cache(async ({ slug, domain }: { slug: string; domain?: string }) => {
   const { isEnabled: draft } = await draftMode()
 
   const payload = await getPayload({ config: configPromise })
+  // First find the tenant
+  const tenant = await payload.find({
+    collection: 'tenants',
+    where: {
+      domain: {
+        equals: domain,
+      },
+    },
+  })
+  console.log('tenant', tenant.docs[0]?.id)
+  console.log('slug', slug)
 
   const result = await payload.find({
     collection: 'pages',
     draft,
     limit: 1,
     pagination: false,
-    overrideAccess: draft,
+    // overrideAccess: draft,
     where: {
-      slug: {
-        equals: slug,
-      },
+      // slug: {
+      //   equals: slug,
+      // },
+      and: [
+        {
+          tenant: {
+            equals: tenant.docs[0]?.id,
+          },
+        },
+        {
+          slug: {
+            equals: slug,
+          },
+        },
+      ],
     },
   })
+  console.log('result', result)
 
   return result.docs?.[0] || null
 })

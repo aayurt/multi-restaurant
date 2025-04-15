@@ -1,3 +1,8 @@
+For adding under the Tenant, you can do by adding a relationship which eventually fails 🤣
+so in the multiTenantPlugin of plugins.config.ts add the collection in the collections array.
+
+As for the plugins to work the multiTenantPlugin must be below the other plugins like form and form-submisssion
+
 # Rato Surya Online
 
 This is the official [Rato Surya Online](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.

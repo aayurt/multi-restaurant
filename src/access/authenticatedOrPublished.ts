@@ -1,3 +1,4 @@
+import { getUserTenantIDs } from '@/utilities/getUserTenantIDs'
 import type { Access } from 'payload'
 
 export const authenticatedOrPublished: Access = ({ req: { user } }) => {
@@ -6,6 +7,9 @@ export const authenticatedOrPublished: Access = ({ req: { user } }) => {
   }
 
   return {
+    tenant: {
+      in: getUserTenantIDs(user, 'tenant-admin'),
+    },
     _status: {
       equals: 'published',
     },

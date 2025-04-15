@@ -9,7 +9,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
+import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
+import { setCookieBasedOnDomain } from './Users/hooks/setCookieBasedOnDomain'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -17,10 +18,10 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: superAdminOrTenantAdminAccess,
+    delete: superAdminOrTenantAdminAccess,
     read: anyone,
-    update: authenticated,
+    update: superAdminOrTenantAdminAccess,
   },
   fields: [
     {
@@ -77,4 +78,18 @@ export const Media: CollectionConfig = {
       },
     ],
   },
+  // hooks: {
+  //   afterLogin: [setCookieBasedOnDomain],
+  //   beforeChange: [
+  //     async ({ req, data }) => {
+  //       if (req.user?.tenant) {
+  //         return {
+  //           ...data,
+  //           tenant: req.user.tenant,
+  //         }
+  //       }
+  //       return data
+  //     },
+  //   ],
+  // },
 }

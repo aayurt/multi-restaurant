@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, CollectionSlug } from 'payload'
 
 import {
   BlocksFeature,
@@ -26,14 +26,16 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
+import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
+import { setCookieBasedOnDomain } from '../Users/hooks/setCookieBasedOnDomain'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
   access: {
-    create: authenticated,
-    delete: authenticated,
+    create: superAdminOrTenantAdminAccess,
+    delete: superAdminOrTenantAdminAccess,
     read: authenticatedOrPublished,
-    update: authenticated,
+    update: superAdminOrTenantAdminAccess,
   },
   // This config controls what's populated by default when a post is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -217,9 +219,11 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
+
     ...slugField(),
   ],
   hooks: {
+    afterLogin: [setCookieBasedOnDomain],
     afterChange: [revalidatePost],
     afterRead: [populateAuthors],
     afterDelete: [revalidateDelete],
