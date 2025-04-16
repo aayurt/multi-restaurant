@@ -26,7 +26,7 @@ export const generateMeta = async (args: {
 
   const ogImage = getImageURL(doc?.meta?.image)
 
-  const title = doc?.meta?.title ? doc?.meta?.title + ' | Rato Surya Online' : 'Rato Surya Online'
+  const title = doc?.meta?.title ? doc?.meta?.title + ' | Afno Restaurant' : 'Afno Restaurant'
 
   return {
     description: doc?.meta?.description,

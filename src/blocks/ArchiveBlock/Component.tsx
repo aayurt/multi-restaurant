@@ -1,4 +1,4 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
+import type { Post, ArchiveBlock as ArchiveBlockProps, Tenant } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
@@ -6,17 +6,27 @@ import React from 'react'
 import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
+import { TenantCollectionArchive } from '@/components/TenantCollectionArchive'
+import { HomeDefault } from '@/utilities/homeDefault'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
-
+  const {
+    id,
+    categories,
+    introContent,
+    limit: limitFromProps,
+    populateBy,
+    selectedDocs,
+    relationTo,
+  } = props
   const limit = limitFromProps || 3
 
   let posts: Post[] = []
+  let tenants: Tenant[] = []
 
   if (populateBy === 'collection') {
     const payload = await getPayload({ config: configPromise })
@@ -25,6 +35,19 @@ export const ArchiveBlock: React.FC<
       if (typeof category === 'object') return category.id
       else return category
     })
+
+    if (relationTo === 'tenants') {
+      const fetchedTenants = await payload.find({
+        collection: 'tenants',
+        depth: 1,
+        limit,
+        where: {
+          id: { not_in: HomeDefault.id },
+        },
+      })
+
+      tenants = fetchedTenants.docs
+    }
 
     const fetchedPosts = await payload.find({
       collection: 'posts',
@@ -60,6 +83,7 @@ export const ArchiveBlock: React.FC<
         </div>
       )}
       <CollectionArchive posts={posts} />
+      <TenantCollectionArchive tenants={tenants} />
     </div>
   )
 }

@@ -600,7 +600,7 @@ export interface ArchiveBlock {
     [k: string]: unknown;
   } | null;
   populateBy?: ('collection' | 'selection') | null;
-  relationTo?: 'posts' | null;
+  relationTo?: ('posts' | 'tenants') | null;
   categories?: (number | Category)[] | null;
   limit?: number | null;
   selectedDocs?:

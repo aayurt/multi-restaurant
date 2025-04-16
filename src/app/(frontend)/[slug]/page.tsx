@@ -107,8 +107,6 @@ const queryPageBySlug = cache(async ({ slug, domain }: { slug: string; domain?: 
       },
     },
   })
-  console.log('tenant', tenant.docs[0]?.id)
-  console.log('slug', slug)
 
   const result = await payload.find({
     collection: 'pages',
@@ -134,7 +132,6 @@ const queryPageBySlug = cache(async ({ slug, domain }: { slug: string; domain?: 
       ],
     },
   })
-  console.log('result', result)
 
   return result.docs?.[0] || null
 })
