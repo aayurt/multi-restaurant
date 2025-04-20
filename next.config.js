@@ -38,6 +38,10 @@ const nextConfig = {
         hostname: `momo.localhost`,
         protocol: 'http',
       },
+      {
+        hostname: `momo.aayushshrestha.com`,
+        protocol: 'https',
+      },
       // {
       //   protocol: 'http',
       //   hostname: '**.localhost',
