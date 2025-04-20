@@ -1,8 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '@/access/authenticated'
 import { isAdmin } from '@/access/admin'
-import { isSuperAdmin, isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 import { createAccess } from './access/create'
 import { readAccess } from './access/read'

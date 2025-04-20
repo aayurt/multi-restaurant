@@ -1,9 +1,9 @@
-import type { Post, ArchiveBlock as ArchiveBlockProps, Tenant } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps, Post, Tenant } from '@/payload-types'
 
+import RichText from '@/components/RichText'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import React from 'react'
-import RichText from '@/components/RichText'
 
 import { CollectionArchive } from '@/components/CollectionArchive'
 import { TenantCollectionArchive } from '@/components/TenantCollectionArchive'
@@ -47,24 +47,24 @@ export const ArchiveBlock: React.FC<
       })
 
       tenants = fetchedTenants.docs
-    }
-
-    const fetchedPosts = await payload.find({
-      collection: 'posts',
-      depth: 1,
-      limit,
-      ...(flattenedCategories && flattenedCategories.length > 0
-        ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
+    } else if (relationTo === 'posts') {
+      const fetchedPosts = await payload.find({
+        collection: 'posts',
+        depth: 1,
+        limit,
+        ...(flattenedCategories && flattenedCategories.length > 0
+          ? {
+              where: {
+                categories: {
+                  in: flattenedCategories,
+                },
               },
-            },
-          }
-        : {}),
-    })
+            }
+          : {}),
+      })
 
-    posts = fetchedPosts.docs
+      posts = fetchedPosts.docs
+    }
   } else {
     if (selectedDocs?.length) {
       const filteredSelectedPosts = selectedDocs.map((post) => {
