@@ -32,7 +32,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data, tenant }) => {
 
   return (
     <header
-      className="relative inset-x-0 top-0  z-20 flex  items-center justify-between   px-4 after:-bottom-px sm:px-6 border border-b border-gray-200 bg-gray-50 dark:border-gray-600  dark:bg-gray-700"
+      className="relative inset-x-0 top-0  z-20 flex  items-center justify-between   px-4 after:-bottom-px sm:px-6 border border-b border-border bg-black dark:bg-card text-white"
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="py-2 flex justify-between  w-full">
