@@ -6,7 +6,7 @@ export const Events: CollectionConfig = {
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
-    read: ({ req }) => Boolean(req.user),
+    read: () => true,
     update: superAdminOrTenantAdminAccess,
   },
   admin: {
