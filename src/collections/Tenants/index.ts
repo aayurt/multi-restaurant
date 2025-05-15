@@ -112,6 +112,22 @@ export const Tenants: CollectionConfig = {
       type: 'group',
       fields: [
         {
+          name: 'location',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'Location of the restaurant location',
+          },
+        },
+        {
+          name: 'Map location',
+          type: 'text',
+          required: false,
+          admin: {
+            description: 'Map address of the restaurant location for google maps',
+          },
+        },
+        {
           name: 'latitude',
           type: 'number',
           required: false,

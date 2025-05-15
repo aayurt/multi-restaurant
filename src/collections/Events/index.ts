@@ -30,6 +30,11 @@ export const Events: CollectionConfig = {
       required: true,
     },
     {
+      name: 'mapLocation',
+      type: 'text',
+      required: false,
+    },
+    {
       name: 'longitude',
       type: 'number',
       required: true,
