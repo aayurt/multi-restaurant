@@ -114,7 +114,7 @@ export const Tenants: CollectionConfig = {
         {
           name: 'location',
           type: 'text',
-          required: true,
+          required: false,
           admin: {
             description: 'Location of the restaurant location',
           },

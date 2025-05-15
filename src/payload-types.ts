@@ -265,6 +265,14 @@ export interface Tenant {
    */
   location?: {
     /**
+     * Location of the restaurant location
+     */
+    location?: string | null;
+    /**
+     * Map address of the restaurant location for google maps
+     */
+    'Map location'?: string | null;
+    /**
      * Latitude coordinate of the restaurant location
      */
     latitude?: number | null;
@@ -944,15 +952,27 @@ export interface Event {
     };
     [k: string]: unknown;
   };
-  location: string;
   /**
-   * Longitude coordinate of the event location
+   * Event location coordinates
    */
-  longitude: number;
-  /**
-   * Latitude coordinate of the event location
-   */
-  latitude: number;
+  location?: {
+    /**
+     * Location of the event location
+     */
+    location?: string | null;
+    /**
+     * Map address of the event location for google maps
+     */
+    'Map location'?: string | null;
+    /**
+     * Latitude coordinate of the event location
+     */
+    latitude?: number | null;
+    /**
+     * Longitude coordinate of the event location
+     */
+    longitude?: number | null;
+  };
   datetime: string;
   /**
    * Enable or disable this event
@@ -1583,6 +1603,8 @@ export interface TenantsSelect<T extends boolean = true> {
   location?:
     | T
     | {
+        location?: T;
+        'Map location'?: T;
         latitude?: T;
         longitude?: T;
       };
@@ -1677,9 +1699,14 @@ export interface OpeningHoursSelect<T extends boolean = true> {
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
-  location?: T;
-  longitude?: T;
-  latitude?: T;
+  location?:
+    | T
+    | {
+        location?: T;
+        'Map location'?: T;
+        latitude?: T;
+        longitude?: T;
+      };
   datetime?: T;
   enabled?: T;
   updatedAt?: T;

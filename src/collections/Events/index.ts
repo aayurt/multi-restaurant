@@ -26,30 +26,45 @@ export const Events: CollectionConfig = {
     },
     {
       name: 'location',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'mapLocation',
-      type: 'text',
-      required: false,
-    },
-    {
-      name: 'longitude',
-      type: 'number',
-      required: true,
+      type: 'group',
+      fields: [
+        {
+          name: 'location',
+          type: 'text',
+          required: false,
+          admin: {
+            description: 'Location of the event location',
+          },
+        },
+        {
+          name: 'Map location',
+          type: 'text',
+          required: false,
+          admin: {
+            description: 'Map address of the event location for google maps',
+          },
+        },
+        {
+          name: 'latitude',
+          type: 'number',
+          required: false,
+          admin: {
+            description: 'Latitude coordinate of the event location',
+            step: 0.000001,
+          },
+        },
+        {
+          name: 'longitude',
+          type: 'number',
+          required: false,
+          admin: {
+            description: 'Longitude coordinate of the event location',
+            step: 0.000001,
+          },
+        },
+      ],
       admin: {
-        step: 0.000001,
-        description: 'Longitude coordinate of the event location',
-      },
-    },
-    {
-      name: 'latitude',
-      type: 'number',
-      required: true,
-      admin: {
-        step: 0.000001,
-        description: 'Latitude coordinate of the event location',
+        description: 'Event location coordinates',
       },
     },
     {
