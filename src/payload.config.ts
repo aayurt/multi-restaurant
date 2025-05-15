@@ -23,6 +23,7 @@ import { MenuItem } from './collections/MenuItem'
 import { Promotions } from './collections/Promotions'
 import { Reviews } from './collections/Reviews'
 import { OpeningHours } from './collections/OpeningHours'
+import { Events } from './collections/Events'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -84,6 +85,7 @@ export default buildConfig({
     Promotions,
     Reviews,
     OpeningHours,
+    Events,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

@@ -79,6 +79,7 @@ export interface Config {
     promotions: Promotion;
     reviews: Review;
     'opening-hours': OpeningHour;
+    events: Event;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -102,6 +103,7 @@ export interface Config {
     promotions: PromotionsSelect<false> | PromotionsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     'opening-hours': OpeningHoursSelect<false> | OpeningHoursSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -922,6 +924,45 @@ export interface OpeningHour {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: number;
+  title: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  location: string;
+  /**
+   * Longitude coordinate of the event location
+   */
+  longitude: number;
+  /**
+   * Latitude coordinate of the event location
+   */
+  latitude: number;
+  datetime: string;
+  /**
+   * Enable or disable this event
+   */
+  enabled: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1141,6 +1182,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'opening-hours';
         value: number | OpeningHour;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: number | Event;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1622,6 +1667,21 @@ export interface OpeningHoursSelect<T extends boolean = true> {
   openTime?: T;
   closeTime?: T;
   isClosed?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  location?: T;
+  longitude?: T;
+  latitude?: T;
+  datetime?: T;
+  enabled?: T;
   updatedAt?: T;
   createdAt?: T;
 }
