@@ -23,5 +23,16 @@ export const Menu: CollectionConfig = {
       name: 'description',
       type: 'textarea',
     },
+    {
+      name: 'gallery',
+      type: 'array',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
+    },
   ],
 }

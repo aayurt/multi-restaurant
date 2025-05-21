@@ -833,6 +833,12 @@ export interface Menu {
   tenant?: (number | null) | Tenant;
   name: string;
   description?: string | null;
+  gallery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -952,6 +958,13 @@ export interface Event {
     };
     [k: string]: unknown;
   };
+  coverImage?: (number | null) | Media;
+  gallery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Event location coordinates
    */
@@ -1621,6 +1634,12 @@ export interface MenuSelect<T extends boolean = true> {
   tenant?: T;
   name?: T;
   description?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1699,6 +1718,13 @@ export interface OpeningHoursSelect<T extends boolean = true> {
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+  coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   location?:
     | T
     | {

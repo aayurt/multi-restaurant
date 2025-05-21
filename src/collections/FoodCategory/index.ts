@@ -12,6 +12,7 @@ export const FoodCategory: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Restaurant',
+    hidden: true,
   },
   fields: [
     {

@@ -9,7 +9,7 @@ export const Categories: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: anyone,
+    read: () => false,
     update: authenticated,
   },
   admin: {
