@@ -34,7 +34,7 @@ export const Posts: CollectionConfig<'posts'> = {
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
-    read: () => false,
+    read: authenticatedOrPublished,
     update: superAdminOrTenantAdminAccess,
   },
   // This config controls what's populated by default when a post is referenced
@@ -51,6 +51,7 @@ export const Posts: CollectionConfig<'posts'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    hidden: true,
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({

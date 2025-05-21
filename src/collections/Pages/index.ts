@@ -27,7 +27,7 @@ export const Pages: CollectionConfig<'pages'> = {
   access: {
     create: superAdminOrTenantAdminAccess,
     delete: superAdminOrTenantAdminAccess,
-    read: () => false,
+    read: authenticatedOrPublished,
     update: superAdminOrTenantAdminAccess,
   },
   // This config controls what's populated by default when a page is referenced
@@ -39,6 +39,7 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    hidden: true,
     livePreview: {
       url: ({ data, req }) => {
         const path = generatePreviewPath({

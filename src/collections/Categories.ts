@@ -9,11 +9,12 @@ export const Categories: CollectionConfig = {
   access: {
     create: authenticated,
     delete: authenticated,
-    read: () => false,
+    read: anyone,
     update: authenticated,
   },
   admin: {
     useAsTitle: 'title',
+    hidden: true,
   },
   fields: [
     {
