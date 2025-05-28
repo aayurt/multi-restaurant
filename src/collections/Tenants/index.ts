@@ -25,7 +25,7 @@ export const Tenants: CollectionConfig = {
       name: 'enabled',
       type: 'checkbox',
       defaultValue: true,
-      required: true,
+      required: false,
       admin: {
         description:
           'If checked, the tenant will be shown on the website. If not checked, the tenant will not be shown on the website.',

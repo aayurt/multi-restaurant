@@ -234,7 +234,7 @@ export interface Tenant {
   /**
    * If checked, the tenant will be shown on the website. If not checked, the tenant will not be shown on the website.
    */
-  enabled: boolean;
+  enabled?: boolean | null;
   logo?: (number | null) | Media;
   coverImage?: (number | null) | Media;
   gallery?:
