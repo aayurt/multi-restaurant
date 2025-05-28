@@ -85,9 +85,22 @@ export const Events: CollectionConfig = {
       },
     },
     {
-      name: 'datetime',
+      name: 'startDatetime',
       type: 'date',
-      required: true,
+      required: false,
+      defaultValue: new Date().toISOString(),
+      admin: {
+        date: {
+          pickerAppearance: 'dayAndTime',
+          displayFormat: 'MMM d, yyyy h:mm a',
+        },
+      },
+    },
+    {
+      name: 'endDatetime',
+      type: 'date',
+      required: false,
+      defaultValue: new Date().toISOString(),
       admin: {
         date: {
           pickerAppearance: 'dayAndTime',

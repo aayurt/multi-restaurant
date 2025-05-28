@@ -12,6 +12,7 @@ export const OpeningHours: CollectionConfig = {
   admin: {
     useAsTitle: 'dayOfWeek',
     group: 'Restaurant',
+    hidden: true,
   },
   indexes: [
     {

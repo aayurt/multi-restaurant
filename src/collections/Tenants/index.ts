@@ -22,16 +22,32 @@ export const Tenants: CollectionConfig = {
       required: true,
     },
     {
-      name: 'logo',
-      type: 'upload',
-      relationTo: 'media',
-      // required: true,
+      name: 'enabled',
+      type: 'checkbox',
+      defaultValue: true,
+      required: true,
+      admin: {
+        description:
+          'If checked, the tenant will be shown on the website. If not checked, the tenant will not be shown on the website.',
+        position: 'sidebar',
+      },
     },
     {
       name: 'coverImage',
       type: 'upload',
       relationTo: 'media',
       // required: true,
+    },
+    {
+      name: 'gallery',
+      type: 'array',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
     },
     {
       name: 'description',
@@ -88,18 +104,6 @@ export const Tenants: CollectionConfig = {
         },
       ],
     },
-    // {
-    //   name: 'locationId',
-    //   type: 'relationship',
-    //   relationTo: 'locations',
-    //   required: true,
-    // },
-    // {
-    //   name: 'openingHoursId',
-    //   type: 'relationship',
-    //   relationTo: 'opening-hours',
-    //   required: true,
-    // },
     {
       name: 'domain',
       type: 'text',
@@ -148,6 +152,58 @@ export const Tenants: CollectionConfig = {
       ],
       admin: {
         description: 'Restaurant location coordinates',
+      },
+    },
+    {
+      name: 'MenuGallery',
+      type: 'array',
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+        },
+      ],
+    },
+    {
+      name: 'OpeningHour',
+      type: 'group',
+      fields: [
+        { label: 'Monday', value: 'monday' },
+        { label: 'Tuesday', value: 'tuesday' },
+        { label: 'Wednesday', value: 'wednesday' },
+        { label: 'Thursday', value: 'thursday' },
+        { label: 'Friday', value: 'friday' },
+        { label: 'Saturday', value: 'saturday' },
+        { label: 'Sunday', value: 'sunday' },
+      ].flatMap((day) => [
+        {
+          name: `${day.value}OpenTime`,
+          type: 'date',
+          defaultValue: '2025-05-28T19:30:00.312Z',
+          admin: {
+            // description: `${day.label} Opening time`,
+            date: {
+              pickerAppearance: 'timeOnly',
+              displayFormat: 'h:mm a',
+            },
+          },
+        },
+        {
+          name: `${day.value}CloseTime`,
+          type: 'date',
+          defaultValue: new Date('1970-01-01T18:00:00.000Z').toISOString(),
+          admin: {
+            // description: `${day.label} Closing time`,
+            date: {
+              pickerAppearance: 'timeOnly',
+              displayFormat: 'h:mm a',
+            },
+          },
+        },
+      ]),
+      admin: {
+        description: 'Restaurant opening hours',
       },
     },
     {

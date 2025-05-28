@@ -12,6 +12,7 @@ export const Menu: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Restaurant',
+    hidden: true,
   },
   fields: [
     {

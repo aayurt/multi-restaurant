@@ -231,8 +231,17 @@ export interface Page {
 export interface Tenant {
   id: number;
   name: string;
-  logo?: (number | null) | Media;
+  /**
+   * If checked, the tenant will be shown on the website. If not checked, the tenant will not be shown on the website.
+   */
+  enabled: boolean;
   coverImage?: (number | null) | Media;
+  gallery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   description?: string | null;
   contactInfo?: {
     phone?: string | null;
@@ -280,6 +289,31 @@ export interface Tenant {
      * Longitude coordinate of the restaurant location
      */
     longitude?: number | null;
+  };
+  MenuGallery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Restaurant opening hours
+   */
+  OpeningHour?: {
+    mondayOpenTime?: string | null;
+    mondayCloseTime?: string | null;
+    tuesdayOpenTime?: string | null;
+    tuesdayCloseTime?: string | null;
+    wednesdayOpenTime?: string | null;
+    wednesdayCloseTime?: string | null;
+    thursdayOpenTime?: string | null;
+    thursdayCloseTime?: string | null;
+    fridayOpenTime?: string | null;
+    fridayCloseTime?: string | null;
+    saturdayOpenTime?: string | null;
+    saturdayCloseTime?: string | null;
+    sundayOpenTime?: string | null;
+    sundayCloseTime?: string | null;
   };
   /**
    * Used for url paths, example: /tenant-slug/page-slug
@@ -986,7 +1020,8 @@ export interface Event {
      */
     longitude?: number | null;
   };
-  datetime: string;
+  startDatetime?: string | null;
+  endDatetime?: string | null;
   /**
    * Enable or disable this event
    */
@@ -1595,8 +1630,14 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface TenantsSelect<T extends boolean = true> {
   name?: T;
-  logo?: T;
+  enabled?: T;
   coverImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   description?: T;
   contactInfo?:
     | T
@@ -1620,6 +1661,30 @@ export interface TenantsSelect<T extends boolean = true> {
         'Map location'?: T;
         latitude?: T;
         longitude?: T;
+      };
+  MenuGallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  OpeningHour?:
+    | T
+    | {
+        mondayOpenTime?: T;
+        mondayCloseTime?: T;
+        tuesdayOpenTime?: T;
+        tuesdayCloseTime?: T;
+        wednesdayOpenTime?: T;
+        wednesdayCloseTime?: T;
+        thursdayOpenTime?: T;
+        thursdayCloseTime?: T;
+        fridayOpenTime?: T;
+        fridayCloseTime?: T;
+        saturdayOpenTime?: T;
+        saturdayCloseTime?: T;
+        sundayOpenTime?: T;
+        sundayCloseTime?: T;
       };
   slug?: T;
   allowPublicRead?: T;
@@ -1733,7 +1798,8 @@ export interface EventsSelect<T extends boolean = true> {
         latitude?: T;
         longitude?: T;
       };
-  datetime?: T;
+  startDatetime?: T;
+  endDatetime?: T;
   enabled?: T;
   updatedAt?: T;
   createdAt?: T;
