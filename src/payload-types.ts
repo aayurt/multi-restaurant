@@ -235,6 +235,7 @@ export interface Tenant {
    * If checked, the tenant will be shown on the website. If not checked, the tenant will not be shown on the website.
    */
   enabled: boolean;
+  logo?: (number | null) | Media;
   coverImage?: (number | null) | Media;
   gallery?:
     | {
@@ -1631,6 +1632,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface TenantsSelect<T extends boolean = true> {
   name?: T;
   enabled?: T;
+  logo?: T;
   coverImage?: T;
   gallery?:
     | T

@@ -33,6 +33,12 @@ export const Tenants: CollectionConfig = {
       },
     },
     {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      hidden: true,
+    },
+    {
       name: 'coverImage',
       type: 'upload',
       relationTo: 'media',
