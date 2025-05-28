@@ -186,7 +186,7 @@ export const Tenants: CollectionConfig = {
         {
           name: `${day.value}OpenTime`,
           type: 'date',
-          defaultValue: '2025-05-28T19:30:00.312Z',
+          defaultValue: '2025-05-28T07:30:00.312Z',
           admin: {
             // description: `${day.label} Opening time`,
             date: {
