@@ -1,7 +1,7 @@
-import type { CollectionConfig } from 'payload'
+import { getPayload, type CollectionConfig } from 'payload'
 
 import { isAdmin } from '@/access/admin'
-import { isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { isSuperAdmin, isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 import { createAccess } from './access/create'
 import { readAccess } from './access/read'
@@ -30,7 +30,7 @@ const defaultTenantArrayField = tenantsArrayField({
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    create: createAccess,
+    create: () => true,
     delete: updateAndDeleteAccess,
     read: readAccess,
     update: updateAndDeleteAccess,
@@ -80,5 +80,28 @@ export const Users: CollectionConfig = {
   timestamps: true,
   hooks: {
     afterLogin: [setCookieBasedOnDomain],
+
+    beforeChange: [
+      async ({ data, req, operation }) => {
+        if (!req.user) {
+          data.role = 'user'
+        }
+        if (req.user && !(isAdmin({ req }) || isSuperAdminAccess({ req }))) {
+          data.role = 'user'
+        }
+        if (operation === 'create') {
+          // Only apply if tenants array is missing or empty
+          if (!data.tenants || data.tenants.length === 0) {
+            data.tenants = [
+              {
+                tenant: data.tenant,
+                roles: ['tenant-viewer'], // or whatever default roles you want
+              },
+            ]
+          }
+        }
+        return data
+      },
+    ],
   },
 }

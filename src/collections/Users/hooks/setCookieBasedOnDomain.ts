@@ -18,7 +18,7 @@ export const setCookieBasedOnDomain: CollectionAfterLoginHook = async ({ req, us
   if (relatedOrg && relatedOrg.docs.length > 0) {
     const tenantCookie = generateCookie({
       name: 'payload-tenant',
-      expires: getCookieExpiration({ seconds: 7200 }),
+      expires: getCookieExpiration({ seconds: 3600 * 24 * 365 }),
       path: '/',
       returnCookieAsObject: false,
       value: String(relatedOrg.docs[0]?.id),
