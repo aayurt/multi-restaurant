@@ -978,21 +978,7 @@ export interface OpeningHour {
 export interface Event {
   id: number;
   title: string;
-  description: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
+  description?: string | null;
   coverImage?: (number | null) | Media;
   gallery?:
     | {
