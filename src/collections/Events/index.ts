@@ -21,8 +21,8 @@ export const Events: CollectionConfig = {
     },
     {
       name: 'description',
-      type: 'text',
       required: false,
+      type: 'textarea',
     },
     {
       name: 'coverImage',
