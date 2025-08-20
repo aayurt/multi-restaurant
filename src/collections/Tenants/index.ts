@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { isSuperAdminAccess } from '@/access/isSuperAdmin'
 import { updateAndDeleteAccess } from './access/updateAndDelete'
+import { sendFCMTopicNotification } from '@/utilities/sendFCMNotification'
 
 export const Tenants: CollectionConfig = {
   slug: 'tenants',
@@ -14,6 +15,23 @@ export const Tenants: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Tenants',
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if ((operation === 'create' || operation === 'update') && req?.payload) {
+          await sendFCMTopicNotification({
+            topic: 'afno-app-tenant',
+            notification: {
+              title: doc.title,
+              body: doc.description || 'Check out the ' + doc.title + ' restaurant.',
+              imageUrl: doc.coverImage?.url,
+            },
+          })
+        }
+        return doc
+      },
+    ],
   },
   fields: [
     {

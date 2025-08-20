@@ -1,5 +1,6 @@
-import type { CollectionConfig } from 'payload'
 import { superAdminOrTenantAdminAccess } from '@/access/superAdminOrTenantAdmin'
+import { sendFCMTopicNotification } from '@/utilities/sendFCMNotification'
+import type { CollectionConfig } from 'payload'
 
 export const Events: CollectionConfig = {
   slug: 'events',
@@ -12,6 +13,23 @@ export const Events: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     group: 'Events',
+  },
+  hooks: {
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if ((operation === 'create' || operation === 'update') && req?.payload) {
+          await sendFCMTopicNotification({
+            topic: 'afno-app-event',
+            notification: {
+              title: doc.title,
+              body: doc.description || 'Check out the ' + doc.title + ' event.',
+              imageUrl: doc.coverImage?.url,
+            },
+          })
+        }
+        return doc
+      },
+    ],
   },
   fields: [
     {
