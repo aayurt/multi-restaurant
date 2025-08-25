@@ -24,6 +24,7 @@ export const Events: CollectionConfig = {
               title: doc.title,
               body: doc.description || 'Check out the ' + doc.title + ' event.',
               imageUrl: doc.coverImage?.url,
+              id: doc.id,
             },
           })
         }

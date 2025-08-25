@@ -26,6 +26,7 @@ export const Tenants: CollectionConfig = {
               title: doc.title,
               body: doc.description || 'Check out the ' + doc.title + ' restaurant.',
               imageUrl: doc.coverImage?.url,
+              id: doc.id,
             },
           })
         }

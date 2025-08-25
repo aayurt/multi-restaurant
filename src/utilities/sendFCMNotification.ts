@@ -3,6 +3,7 @@ import { cert, initializeApp, getApps, ServiceAccount } from 'firebase-admin/app
 import serviceAccountKey from '../../serviceAccountKey.json'
 
 type NotificationData = {
+  id?: string
   title: string
   body: string
   imageUrl?: string
@@ -84,6 +85,8 @@ export const sendFCMTopicNotification = async ({
       },
       data: {
         link: notification.link || '',
+        topic: topic,
+        id: notification.id || '',
       },
       topic,
     }
